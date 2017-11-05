@@ -1,19 +1,30 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=3 format=1]
 
-[ext_resource path="res://Star.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Galaxy.gd" type="Script" id=1]
+[ext_resource path="res://Star.tscn" type="PackedScene" id=2]
 
 [node name="Galaxy" type="Node2D"]
 
-[node name="Star" parent="." instance=ExtResource( 1 )]
+script/script = ExtResource( 1 )
 
-transform/pos = Vector2( 790.028, 421.053 )
+[node name="Star" parent="." instance=ExtResource( 2 )]
 
-[node name="Star 2" parent="." instance=ExtResource( 1 )]
+transform/pos = Vector2( 713.573, 393.352 )
 
-transform/pos = Vector2( 320.222, 385.596 )
+[node name="Star1" parent="." instance=ExtResource( 2 )]
 
-[node name="Star 3" parent="." instance=ExtResource( 1 )]
+transform/pos = Vector2( 120.776, 170.637 )
 
-transform/pos = Vector2( 500.831, 132.964 )
+[node name="Star2" parent="." instance=ExtResource( 2 )]
+
+transform/pos = Vector2( 844.321, 177.285 )
+
+[node name="Star 2" parent="." instance=ExtResource( 2 )]
+
+transform/pos = Vector2( 303.601, 339.058 )
+
+[node name="Star 3" parent="." instance=ExtResource( 2 )]
+
+transform/pos = Vector2( 440.997, 116.343 )
 
 
