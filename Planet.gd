@@ -1,4 +1,4 @@
-extends Node2D
+extends "res://Ownable.gd"
 
 var test_ship_count = 12
 var ship_scene = load("res://Ship.tscn")
@@ -9,13 +9,9 @@ func _ready():
 	var l = self.get_node("Label")
 	l.set_pos(Vector2(36, 0))
 	
-	# initialize ships for testing
-	for i in range(randi() % test_ship_count):
-		create_ship()
-	
 	# initialize starbases for testing
 	if (randi() % 2) >= 1:
-		create_starbase()
+		create_starbase(self.owner)
 
 func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
@@ -33,13 +29,15 @@ func move_ship_here(s):
 	
 	s.selected = false
 
-func create_starbase():
+func create_starbase(owner):
 	var s = starbase_scene.instance()
+	s.set_owner(owner)
 	add_child(s)
 	s.set_pos(Vector2(-24, 0))
 
-func create_ship():
+func create_ship(owner):
 	var s = ship_scene.instance()
+	s.set_owner(owner)
 	add_child(s)
 	s.add_to_group("ships")
 	update_ship_display()

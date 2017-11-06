@@ -1,4 +1,4 @@
-extends Area2D
+extends "res://Ownable.gd"
 
 var selected = false
 const BATCH_SELECT_SIZE = 5

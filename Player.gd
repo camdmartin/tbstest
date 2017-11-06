@@ -1,10 +1,17 @@
 extends Node2D
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+# these are default values, should be changed after creation
+var color = Color(255, 255, 255)
+var id = -1
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	pass
+	
+func init(color, id):
+	self.color = color
+	self.id = id
+	
+func get_color():
+	return self.color
