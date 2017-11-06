@@ -45,12 +45,6 @@ func set_hyperlanes():
 			s.hyperlanes.append(t)
 			t.hyperlanes.append(s)
 
-func set_starting_content():
-	var stars = get_tree().get_nodes_in_group("stars")
-	for p in get_tree().get_nodes_in_group("players"):
-		for i in range(get_parent().STARTING_WORLDS):
-			create_planet(stars[randi() % stars.size()], p)
-
 func create_star():
 	var s = star_scene.instance()
 	s.add_to_group("stars")

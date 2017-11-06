@@ -22,7 +22,7 @@ func _ready():
 
 func create_planet(owner):
 	var p = planet_scene.instance()
-	p.owner = owner
+	p.set_owner(owner)
 	add_child(p)
 	p.add_to_group("planets")
 	p.set_pos(Vector2(0, 16 + 32 * get_planets().size()))
@@ -32,5 +32,4 @@ func get_planets():
 	for p in get_children():
 		if p.is_in_group("planets"):
 			planets.append(p)
-	print(planets.size())
 	return planets

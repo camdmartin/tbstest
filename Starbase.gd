@@ -3,10 +3,8 @@ extends "res://Ownable.gd"
 const INITIAL_SHIPS = 5
 
 func _ready():
-	set_random_owner()
-	self.find_node("Sprite").set_modulate(owner.get_color())
-	create_starter_ships()
-	
+	pass
+
 func set_random_owner():
 	var players = get_tree().get_nodes_in_group("players")
 	owner = players[randi() % players.size()]

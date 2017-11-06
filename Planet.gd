@@ -8,10 +8,6 @@ func _ready():
 	# set conditions for ship label
 	var l = self.get_node("Label")
 	l.set_pos(Vector2(36, 0))
-	
-	# initialize starbases for testing
-	if (randi() % 2) >= 1:
-		create_starbase(self.owner)
 
 func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
@@ -25,9 +21,8 @@ func move_ship_here(s):
 	prev.remove_child(s)
 	prev.update_ship_display()
 	add_child(s)
-	update_ship_display()
-	
 	s.selected = false
+	update_ship_display()
 
 func create_starbase(owner):
 	var s = starbase_scene.instance()
@@ -67,7 +62,7 @@ func update_ship_display():
 		if c.is_in_group("ships"):
 			c.set_pos(Vector2(24, 0))
 	
-	if ship_count > 1:
+	if ship_count >= 1:
 		l.set_text("x%s" % ship_count)
 		for s in self.get_ships():
 			s.hide()
