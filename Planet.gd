@@ -20,7 +20,7 @@ func _ready():
 func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
 		for s in get_tree().get_nodes_in_group("ships"):
-			if s.selected == true:
+			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()):
 				move_ship_here(s)
 
 func move_ship_here(s):
@@ -70,9 +70,12 @@ func update_ship_display():
 			c.set_pos(Vector2(24, 0))
 	
 	if ship_count > 1:
-		l.set_text("x%s (%s)" % [ship_count, get_selected_ships().size()])
+		l.set_text("x%s" % ship_count)
 		for s in self.get_ships():
 			s.hide()
 		self.get_ships()[0].show()
 	else:
 		l.set_text("")
+		
+	if get_selected_ships().size() > 0:
+		l.set_text("x%s (%s)" % [ship_count, get_selected_ships().size()])
