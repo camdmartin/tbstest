@@ -1,9 +1,9 @@
 extends Node2D
 
 const STAR_GEN_RADIUS = 200
-const MIN_HYPERLANES = 3
-const HYPERLANE_VARIANCE = 1
-const MAX_STARS = 8
+const MIN_HYPERLANES = 2
+const HYPERLANE_VARIANCE = 3
+const MAX_STARS = 12
 const BORDER_SIZE = 100
 
 var generator_x = 1000
