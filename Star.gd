@@ -1,6 +1,7 @@
 extends Node2D
 
-var max_planet_count = 4
+const MAX_PLANET_COUNT = 4
+const MAX_HYPERLANES = 2
 var name = self.get_name()
 
 func _ready():
@@ -12,7 +13,7 @@ func _ready():
 	# initialize the planets in the system
 	var planet_scene = load("res://Planet.tscn")
 	
-	for i in range(randi() % max_planet_count + 2):
+	for i in range(randi() % MAX_PLANET_COUNT + 2):
 		var p = planet_scene.instance()
 		p.set_pos(Vector2(0, 48 + 32 * i))
 		add_child(p)
