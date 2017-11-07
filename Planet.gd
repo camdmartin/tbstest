@@ -4,6 +4,7 @@ var test_ship_count = 12
 var world_type = "terrestrial"
 var ship_scene = load("res://Ship.tscn")
 var starbase_scene = load("res://Starbase.tscn")
+var starbases = []
 
 func _ready():
 	# set conditions for ship label
@@ -11,10 +12,18 @@ func _ready():
 	l.set_pos(Vector2(36, 0))
 
 func _input_event(viewport, event, shape_idx):
-	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
+	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.is_pressed() and Input.is_action_pressed("batch_select"):
+		# starbase construction on SHIFT-click
+		if self.starbases.size() == 0 and get_owner().metal >= 3:
+			create_starbase(get_owner())
+			get_owner().metal -= 3
+			get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
+	elif event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
 		# if only one ship in orbit is selected, destroy it and colonize this planet
-		if get_selected_ships().size() == 1:
+		if get_selected_ships().size() == 1 and get_selected_ships()[0].get_owner().metal >= 1:
+			get_selected_ships()[0].get_owner().metal -= 1
 			colonize(get_selected_ships()[0])
+			get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 		var prev_worlds = []
 		for s in get_tree().get_nodes_in_group("ships"):
 			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()) and s.get_owner().fuel > 0:
