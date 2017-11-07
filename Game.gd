@@ -7,6 +7,7 @@ const COLOR_ARRAY = [Color(255, 0, 0), Color(0, 255, 0), Color(0, 0, 255), Color
 
 var player_scene = load("res://Player.tscn")
 var players = []
+var current_player = 0
 var default_player = player_scene.instance()
 
 func _ready():
@@ -23,6 +24,9 @@ func _ready():
 	add_child(new_g)
 	
 	set_starting_content()
+	
+	var ui = self.get_node("Control")
+	ui.update_label()
 
 func set_starting_content():
 	var stars = get_tree().get_nodes_in_group("stars")
@@ -33,11 +37,14 @@ func set_starting_content():
 			var to_gen = sp[randi() % sp.size()]
 			if to_gen.owner_id == 0:
 				to_gen.set_owner(p)
-				# print(to_gen.owner)
 				to_gen.create_starbase(p)
 				for s in range(STARTING_SHIPS):
 					to_gen.create_ship(p)
 				to_gen.update_ship_display()
 				worlds_generated += 1
-	# print(default_player)
-	# print(players)
+
+func next_turn():
+	if current_player >= players.size():
+		current_player = 1
+	else:
+		current_player += 1
