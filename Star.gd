@@ -26,6 +26,16 @@ func create_planet(owner):
 	add_child(p)
 	p.add_to_group("planets")
 	p.set_pos(Vector2(0, 16 + 32 * get_planets().size()))
+	set_random_planet_type(p)
+
+func set_random_planet_type(planet):
+	var i = rand_range(-1, 1)
+	if i < 0:
+		planet.world_type = "terrestrial"
+		planet.get_node("Sprite").set_texture(load("res://terrestrial.png"))
+	else:
+		planet.world_type = "gas_giant"
+		planet.get_node("Sprite").set_texture(load("res://gas_giant.png"))
 
 func get_planets():
 	var planets = []

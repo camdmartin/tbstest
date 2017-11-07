@@ -1,6 +1,7 @@
 extends "res://Ownable.gd"
 
 var test_ship_count = 12
+var world_type = "terrestrial"
 var ship_scene = load("res://Ship.tscn")
 var starbase_scene = load("res://Starbase.tscn")
 
@@ -14,9 +15,16 @@ func _input_event(viewport, event, shape_idx):
 		# if only one ship in orbit is selected, destroy it and colonize this planet
 		if get_selected_ships().size() == 1:
 			colonize(get_selected_ships()[0])
+		var prev_worlds = []
 		for s in get_tree().get_nodes_in_group("ships"):
-			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()):
+			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()) and self.get_owner().fuel > 0:
+				prev_worlds.append(s.get_parent())
 				move_ship_here(s)
+				self.get_owner().fuel -= 1
+		for p in prev_worlds:
+			for s in p.get_selected_ships():
+				s.selected = false
+			p.update_ship_display()
 
 func colonize(ship):
 	for s in get_ships():
@@ -24,8 +32,8 @@ func colonize(ship):
 			return
 	if ship.owner_id == self.owner_id:
 		return
-	set_owner(get_tree().get_root().get_node("Game").players[get_selected_ships()[0].owner_id - 1])
-	remove_child(get_selected_ships()[0])
+	set_owner(ship.get_owner())
+	remove_child(ship)
 	update_ship_display()
 
 func move_ship_here(s):

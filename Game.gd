@@ -48,3 +48,8 @@ func next_turn():
 		current_player = 1
 	else:
 		current_player += 1
+	players[current_player - 1].update_resources()
+	for s in get_tree().get_nodes_in_group("ships"):
+		s.selected = false
+	for p in get_tree().get_nodes_in_group("planets"):
+		p.update_ship_display()
