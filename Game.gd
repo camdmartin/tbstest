@@ -6,6 +6,7 @@ const STARTING_WORLDS = 1
 const COLOR_ARRAY = [Color(255, 0, 0), Color(0, 255, 0), Color(0, 0, 255), Color(255, 255, 0), Color(255, 0, 255), Color(0, 255, 255)]
 
 var player_scene = load("res://Player.tscn")
+var ui_control = load("res://Control.tscn")
 var players = []
 var current_player = 0
 var default_player = player_scene.instance()
@@ -24,6 +25,9 @@ func _ready():
 	var new_g = galaxy_scene.instance()
 	add_child(new_g)
 	
+	var control = ui_control.instance()
+	add_child(control)
+	
 	set_starting_content()
 	
 	var ui = self.get_node("Control")
@@ -38,10 +42,9 @@ func set_starting_content():
 			var to_gen = sp[randi() % sp.size()]
 			if to_gen.owner_id == 0:
 				to_gen.set_owner(p)
-				p.metal += 3
-				to_gen.create_starbase(p)
+				to_gen.create_starbase(p, 0)
 				for s in range(STARTING_SHIPS):
-					to_gen.create_ship(p)
+					to_gen.create_ship(p, 0)
 				to_gen.update_ship_display()
 				worlds_generated += 1
 

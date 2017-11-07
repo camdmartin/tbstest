@@ -15,9 +15,7 @@ func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.is_pressed() and Input.is_action_pressed("batch_select"):
 		# starbase construction on SHIFT-click
 		if self.starbases.size() == 0 and get_owner().metal >= 3:
-			create_starbase(get_owner())
-			get_owner().metal -= 3
-			get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
+			create_starbase(get_owner(), 3)
 	elif event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
 		# if only one ship in orbit is selected, destroy it and colonize this planet
 		if get_selected_ships().size() == 1 and get_selected_ships()[0].get_owner().metal >= 1:
@@ -57,24 +55,24 @@ func move_ship_here(s):
 		s.get_owner().fuel -= 1
 		get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 
-func create_starbase(owner):
+func create_starbase(owner, cost):
 	var s = starbase_scene.instance()
 	starbases.append(s)
 	s.set_owner(owner)
 	add_child(s)
 	s.set_pos(Vector2(-24, 0))
 
-	self.get_owner().metal -= 3
+	self.get_owner().metal -= cost
 	get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 
-func create_ship(owner):
+func create_ship(owner, cost):
 	var s = ship_scene.instance()
 	s.set_owner(owner)
 	add_child(s)
 	s.add_to_group("ships")
 	update_ship_display()
 
-	self.get_owner().metal -= 1
+	self.get_owner().metal -= cost
 	get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 
 func destroy_ship(ship):
