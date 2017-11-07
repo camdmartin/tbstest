@@ -11,9 +11,22 @@ func _ready():
 
 func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
+		# if only one ship in orbit is selected, destroy it and colonize this planet
+		if get_selected_ships().size() == 1:
+			colonize(get_selected_ships()[0])
 		for s in get_tree().get_nodes_in_group("ships"):
 			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()):
 				move_ship_here(s)
+
+func colonize(ship):
+	for s in get_ships():
+		if s.owner_id != ship.owner_id:
+			return
+	if ship.owner_id == self.owner_id:
+		return
+	set_owner(get_tree().get_root().get_node("Game").players[get_selected_ships()[0].owner_id - 1])
+	remove_child(get_selected_ships()[0])
+	update_ship_display()
 
 func move_ship_here(s):
 	var prev = s.get_parent()
