@@ -7,6 +7,7 @@ func _ready():
 
 func create_starter_ships():
 	for i in range(INITIAL_SHIPS):
+		self.get_owner().metal += 1
 		self.get_parent().create_ship(self.owner)
 
 func _input_event(viewport, event, shape_idx):
@@ -14,5 +15,3 @@ func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed and self.owner_id == current_player:
 		if self.get_owner().metal > 0:
 			self.get_parent().create_ship(self.get_owner())
-			self.get_owner().metal -= 1
-			get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()

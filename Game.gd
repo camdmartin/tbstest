@@ -38,6 +38,7 @@ func set_starting_content():
 			var to_gen = sp[randi() % sp.size()]
 			if to_gen.owner_id == 0:
 				to_gen.set_owner(p)
+				p.metal += 3
 				to_gen.create_starbase(p)
 				for s in range(STARTING_SHIPS):
 					to_gen.create_ship(p)

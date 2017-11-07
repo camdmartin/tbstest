@@ -21,7 +21,6 @@ func _input_event(viewport, event, shape_idx):
 	elif event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.pressed:
 		# if only one ship in orbit is selected, destroy it and colonize this planet
 		if get_selected_ships().size() == 1 and get_selected_ships()[0].get_owner().metal >= 1:
-			get_selected_ships()[0].get_owner().metal -= 1
 			colonize(get_selected_ships()[0])
 			get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 		var prev_worlds = []
@@ -29,8 +28,6 @@ func _input_event(viewport, event, shape_idx):
 			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()) and s.get_owner().fuel > 0:
 				prev_worlds.append(s.get_parent())
 				move_ship_here(s)
-				s.get_owner().fuel -= 1
-				get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 		for p in prev_worlds:
 			for s in p.get_selected_ships():
 				s.selected = false
@@ -42,24 +39,33 @@ func colonize(ship):
 			return
 	if ship.owner_id == self.owner_id:
 		return
+	get_selected_ships()[0].get_owner().metal -= 1
 	set_owner(ship.get_owner())
 	remove_child(ship)
 	update_ship_display()
 
 func move_ship_here(s):
-	var prev = s.get_parent()
-	
-	prev.remove_child(s)
-	prev.update_ship_display()
-	add_child(s)
-	s.selected = false
-	update_ship_display()
+	if s.is_enemy_in_orbit() == false:
+		var prev = s.get_parent()
+		
+		prev.remove_child(s)
+		prev.update_ship_display()
+		add_child(s)
+		s.selected = false
+		update_ship_display()
+
+		s.get_owner().fuel -= 1
+		get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 
 func create_starbase(owner):
 	var s = starbase_scene.instance()
+	starbases.append(s)
 	s.set_owner(owner)
 	add_child(s)
 	s.set_pos(Vector2(-24, 0))
+
+	self.get_owner().metal -= 3
+	get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 
 func create_ship(owner):
 	var s = ship_scene.instance()
@@ -67,6 +73,9 @@ func create_ship(owner):
 	add_child(s)
 	s.add_to_group("ships")
 	update_ship_display()
+
+	self.get_owner().metal -= 1
+	get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 
 func destroy_ship(ship):
 	self.remove_child(ship)
