@@ -68,6 +68,9 @@ func create_ship(owner):
 	s.add_to_group("ships")
 	update_ship_display()
 
+func destroy_ship(ship):
+	self.remove_child(ship)
+
 func count_ships():
 	return get_ships().size()
 
