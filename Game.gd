@@ -12,6 +12,7 @@ var default_player = player_scene.instance()
 
 func _ready():
 	var galaxy_scene = load("res://Galaxy.tscn")
+	add_child(default_player)
 	
 	for p in range(PLAYER_COUNT):
 		var new_p = player_scene.instance()

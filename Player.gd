@@ -21,6 +21,12 @@ func init(color, id):
 func get_color():
 	return self.color
 
+func add_possession(object):
+	for p in get_parent().players:
+		if p.id != self.id and p.properties.has(object):
+			p.properties.remove(p.properties.find(object))
+	self.properties.append(object)
+
 func update_resources():
 	self.fuel = BASE_FUEL
 	self.metal = BASE_METAL
