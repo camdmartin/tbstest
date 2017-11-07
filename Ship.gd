@@ -9,7 +9,7 @@ func _ready():
 func _input_event(viewport, event, shape_idx):
 	var ships_on_planet = []
 	for s in self.get_parent().get_ships():
-		if s.selected == false:
+		if s.selected == false and s.owner_id == owner_id:
 			ships_on_planet.append(s)
 	
 	if ships_on_planet.size() > 0:
@@ -31,7 +31,7 @@ func _input_event(viewport, event, shape_idx):
 	# deselection
 	var ships_on_planet = []
 	for s in self.get_parent().get_ships():
-		if s.selected == true:
+		if s.selected == true and s.owner_id == owner_id:
 			ships_on_planet.append(s)
 	
 	if ships_on_planet.size() > 0:

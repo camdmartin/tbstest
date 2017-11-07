@@ -27,14 +27,17 @@ func _ready():
 func set_starting_content():
 	var stars = get_tree().get_nodes_in_group("stars")
 	for p in players:
-		print(p.id)
 		var worlds_generated = 0
 		while worlds_generated < STARTING_WORLDS:
 			var sp = stars[randi() % stars.size()].get_planets()
 			var to_gen = sp[randi() % sp.size()]
-			if to_gen.owner.id == default_player.id:
+			if to_gen.owner_id == 0:
 				to_gen.set_owner(p)
+				# print(to_gen.owner)
 				to_gen.create_starbase(p)
 				for s in range(STARTING_SHIPS):
 					to_gen.create_ship(p)
+				to_gen.update_ship_display()
 				worlds_generated += 1
+	# print(default_player)
+	# print(players)

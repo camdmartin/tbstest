@@ -47,6 +47,13 @@ func get_selected_ships():
 			selected_ships.append(s)
 	return selected_ships
 
+func get_selected_ships_by_owner(owner):
+	var selected_ships = []
+	for s in get_ships():
+		if s.selected == true and s.owner_id == owner.id:
+			selected_ships.append(s)
+	return selected_ships
+
 func get_ships():
 	var ships = []
 	for c in self.get_children():
@@ -55,20 +62,32 @@ func get_ships():
 	return ships
 
 func update_ship_display():
-	var l = self.get_node("Label")
-	var ship_count = count_ships()
+	var labels = []
+	for l in self.get_children():
+		if l.get_type() == "Label":
+			remove_child(l)
+	var offset = 24
 	
-	for c in self.get_children():
-		if c.is_in_group("ships"):
-			c.set_pos(Vector2(24, 0))
-	
-	if ship_count >= 1:
-		l.set_text("x%s" % ship_count)
-		for s in self.get_ships():
-			s.hide()
-		self.get_ships()[0].show()
-	else:
-		l.set_text("")
-		
-	if get_selected_ships().size() > 0:
-		l.set_text("x%s (%s)" % [ship_count, get_selected_ships().size()])
+	for p in get_tree().get_root().get_node("Game").players:
+		var count = 0
+		var allied = []
+		for s in get_ships():
+			# print(s.owner)
+			if s.owner_id == p.id:
+				allied.append(s)
+				count += 1
+		if allied.size() > 0:
+			for a in allied:
+				a.set_pos(Vector2(offset, 0))
+				a.hide()
+			allied[0].show()
+			
+			var l = Label.new()
+			self.add_child(l)
+			l.set_pos(Vector2(offset - 8, 12))
+			if get_selected_ships_by_owner(p).size() > 0:
+				l.set_text("x%s\n(%s)" % [count, get_selected_ships_by_owner(p).size()])
+			else:
+				l.set_text("x%s" % count)
+
+			offset += 24

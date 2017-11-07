@@ -2,7 +2,7 @@ extends Node2D
 
 # these are default values, should be changed after creation
 var color = Color(255, 255, 255)
-var id = -1
+var id = 0
 
 func _ready():
 	# Called every time the node is added to the scene.
