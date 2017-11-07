@@ -49,6 +49,7 @@ func next_turn():
 	else:
 		current_player += 1
 	players[current_player - 1].update_resources()
+	get_node("Control").update_resource_panel()
 	for s in get_tree().get_nodes_in_group("ships"):
 		s.selected = false
 	for p in get_tree().get_nodes_in_group("planets"):

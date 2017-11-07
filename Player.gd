@@ -25,7 +25,7 @@ func update_resources():
 	self.fuel = BASE_FUEL
 	self.metal = BASE_METAL
 	for p in properties:
-		if p.get_type() == "Planet":
+		if p.get_filename() == "res://Planet.tscn":
 			if p.world_type == "terrestrial":
 				self.metal += 2
 			elif p.world_type == "gas_giant":

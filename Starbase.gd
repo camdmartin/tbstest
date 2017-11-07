@@ -15,3 +15,4 @@ func _input_event(viewport, event, shape_idx):
 		if self.get_owner().metal > 0:
 			self.get_parent().create_ship(self.get_owner())
 			self.get_owner().metal -= 1
+			get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()

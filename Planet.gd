@@ -17,10 +17,11 @@ func _input_event(viewport, event, shape_idx):
 			colonize(get_selected_ships()[0])
 		var prev_worlds = []
 		for s in get_tree().get_nodes_in_group("ships"):
-			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()) and self.get_owner().fuel > 0:
+			if s.selected == true and get_parent().hyperlanes.has(s.get_parent().get_parent()) and s.get_owner().fuel > 0:
 				prev_worlds.append(s.get_parent())
 				move_ship_here(s)
-				self.get_owner().fuel -= 1
+				s.get_owner().fuel -= 1
+				get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
 		for p in prev_worlds:
 			for s in p.get_selected_ships():
 				s.selected = false
