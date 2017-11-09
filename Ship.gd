@@ -20,9 +20,9 @@ func _input_event(viewport, event, shape_idx):
 	var current_player = get_tree().get_root().get_node("Game").current_player
 	var planet = get_parent()
 	
-	if self.owner_id == current_player:
+	if self.owner_id == current_player.id:
 		for s in self.get_parent().get_ships():
-			if s.selected == false and s.owner_id == current_player:
+			if s.selected == false and s.owner_id == current_player.id:
 				ships_on_planet.append(s)
 		
 		if ships_on_planet.size() > 0:
@@ -44,7 +44,7 @@ func _input_event(viewport, event, shape_idx):
 		# deselection
 		var ships_on_planet = []
 		for s in self.get_parent().get_ships():
-			if s.selected == true and s.owner_id == current_player:
+			if s.selected == true and s.owner_id == current_player.id:
 				ships_on_planet.append(s)
 		
 		if ships_on_planet.size() > 0:
@@ -64,13 +64,13 @@ func _input_event(viewport, event, shape_idx):
 				for s in ships_on_planet:
 					s.selected = false
 	# fighting costs 2 fuel
-	elif event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.is_pressed() and get_tree().get_root().get_node("Game").players[current_player - 1].fuel > 2:
+	elif event.type == InputEvent.MOUSE_BUTTON and event.button_index == BUTTON_LEFT and event.is_pressed() and get_tree().get_root().get_node("Game").current_player.fuel > 2:
 		# compile fleets in combat
-		if get_parent().get_selected_ships_by_owner(get_tree().get_root().get_node("Game").players[current_player - 1]).size() > 0:
+		if get_parent().get_selected_ships_by_owner(get_tree().get_root().get_node("Game").current_player).size() > 0:
 			var enemy_fleet = [] # the current player's fleet
 			var allied_fleet = [] # this ship (the target)'s fleet
 			for s in get_parent().get_ships():
-				if s.owner_id == current_player:
+				if s.owner_id == current_player.id:
 					enemy_fleet.append(s)
 				elif s.owner_id == owner_id:
 					allied_fleet.append(s)
@@ -78,7 +78,7 @@ func _input_event(viewport, event, shape_idx):
 			var allied_casualties = max(1, int(round(enemy_fleet.size() / 2)))
 			var enemy_casualties = max(1, int(round(allied_fleet.size() / 2)))
 			if planet.starbases.size() > 0:
-				if planet.starbases[0].owner_id == current_player:
+				if planet.starbases[0].owner_id == current_player.id:
 					allied_casualties += 2
 				elif planet.starbases[0].owner_id == owner_id:
 					enemy_casualties += 2

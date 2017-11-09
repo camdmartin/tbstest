@@ -11,6 +11,8 @@ var properties = []
 var metal = BASE_METAL
 var fuel = BASE_FUEL
 
+var defeated = false
+
 func _ready():
 	pass
 	
@@ -36,3 +38,11 @@ func update_resources():
 				self.metal += 2
 			elif p.world_type == "gas_giant":
 				self.fuel += 5
+
+func lose_game():
+	for s in get_tree().get_nodes_in_group("ships"):
+		if s.owner_id == id:
+			var p = s.get_parent()
+			s.queue_free()
+			p.update_ship_display()
+	properties = []

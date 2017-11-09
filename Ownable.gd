@@ -15,4 +15,4 @@ func set_owner(owner):
 	find_node("Sprite").set_modulate(self.color)
 
 func get_owner():
-	return get_tree().get_root().get_node("Game").players[self.owner_id - 1]
+	return get_tree().get_root().get_node("Game").get_player_by_id(owner_id)

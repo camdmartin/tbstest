@@ -8,8 +8,8 @@ const COLOR_ARRAY = [Color(255, 0, 0), Color(0, 255, 0), Color(0, 0, 255), Color
 var player_scene = load("res://Player.tscn")
 var ui_control = load("res://Control.tscn")
 var players = []
-var current_player = 0
 var default_player = player_scene.instance()
+var current_player = default_player
 
 func _ready():
 	var galaxy_scene = load("res://Galaxy.tscn")
@@ -22,6 +22,8 @@ func _ready():
 		new_p.add_to_group("players")
 		players.append(new_p)
 	
+	current_player = players[0]
+	
 	var new_g = galaxy_scene.instance()
 	add_child(new_g)
 	
@@ -30,8 +32,8 @@ func _ready():
 	
 	set_starting_content()
 	
-	var ui = self.get_node("Control")
-	ui.update_label()
+	control.update_label()
+	control.update_resource_panel()
 
 func set_starting_content():
 	var stars = get_tree().get_nodes_in_group("stars")
@@ -48,14 +50,41 @@ func set_starting_content():
 				to_gen.update_ship_display()
 				worlds_generated += 1
 
+func get_player_by_id(id):
+	for p in players:
+		if p.id == id:
+			return p
+
 func next_turn():
-	if current_player >= players.size():
-		current_player = 1
+	for p in players:
+		var defeated = true
+		for r in p.properties:
+			if (!weakref(r).get_ref()):
+				pass
+			else:
+				if r.get_filename() == "res://Starbase.tscn" or r.get_filename() == "res://Planet.tscn":
+					defeated = false
+		p.defeated = defeated
+		if p.defeated == true:
+			print("Player " + str(p.id) + " has fallen.")
+	
+	for p in players:
+		if p.defeated == true:
+			p.lose_game()
+			players.remove(players.find(p))
+			p.queue_free()
+	
+	var i = players.find(current_player)
+	
+	if  i >= players.size() - 1:
+		current_player = players[0]
 	else:
-		current_player += 1
-	players[current_player - 1].update_resources()
+		current_player = players[i + 1]
+
+	current_player.update_resources()
 	get_node("Control").update_resource_panel()
 	for s in get_tree().get_nodes_in_group("ships"):
 		s.selected = false
 	for p in get_tree().get_nodes_in_group("planets"):
 		p.update_ship_display()
+	get_node("Control").update_label()
