@@ -53,7 +53,7 @@ func move_ship_here(s):
 		update_ship_display()
 
 		s.get_owner().fuel -= 1
-		get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
+		get_tree().get_root().get_node("/root/Game/UI").update_resource_panel()
 
 func create_starbase(owner, cost):
 	var s = starbase_scene.instance()
@@ -63,7 +63,7 @@ func create_starbase(owner, cost):
 	s.set_pos(Vector2(-24, 0))
 
 	self.get_owner().metal -= cost
-	get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
+	get_tree().get_root().get_node("/root/Game/UI").update_resource_panel()
 
 func create_ship(owner, cost):
 	var s = ship_scene.instance()
@@ -73,7 +73,7 @@ func create_ship(owner, cost):
 	update_ship_display()
 
 	self.get_owner().metal -= cost
-	get_tree().get_root().get_node("/root/Game/Control").update_resource_panel()
+	get_tree().get_root().get_node("/root/Game/UI").update_resource_panel()
 
 func destroy_ship(ship):
 	self.remove_child(ship)

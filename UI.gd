@@ -5,6 +5,7 @@ var player_info = load("res://Player Info.tscn")
 func _ready():
 	var b = get_node("End Turn")
 	b.connect("pressed", self, "next_turn")
+	get_node("Victory").hide()
 
 func update_label():
 	var current_player = get_parent().current_player

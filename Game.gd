@@ -1,12 +1,12 @@
 extends Node2D
 
-const PLAYER_COUNT = 4
+const PLAYER_COUNT = 1
 const STARTING_SHIPS = 5
 const STARTING_WORLDS = 1
 const COLOR_ARRAY = [Color(255, 0, 0), Color(0, 255, 0), Color(0, 0, 255), Color(255, 255, 0), Color(255, 0, 255), Color(0, 255, 255)]
 
 var player_scene = load("res://Player.tscn")
-var ui_control = load("res://Control.tscn")
+var ui_control = load("res://UI.tscn")
 var players = []
 var default_player = player_scene.instance()
 var current_player = default_player
@@ -35,6 +35,10 @@ func _ready():
 	control.update_label()
 	control.update_resource_panel()
 
+func new_game():
+	# boot back to splash screen
+	pass
+
 func set_starting_content():
 	var stars = get_tree().get_nodes_in_group("stars")
 	for p in players:
@@ -56,6 +60,7 @@ func get_player_by_id(id):
 			return p
 
 func next_turn():
+	print(get_children())
 	for p in players:
 		var defeated = true
 		for r in p.properties:
@@ -74,6 +79,9 @@ func next_turn():
 			players.remove(players.find(p))
 			p.queue_free()
 	
+	if players.size() == 1:
+		get_node("UI").get_node("Victory").show()
+	
 	var i = players.find(current_player)
 	
 	if  i >= players.size() - 1:
@@ -82,9 +90,9 @@ func next_turn():
 		current_player = players[i + 1]
 
 	current_player.update_resources()
-	get_node("Control").update_resource_panel()
+	get_node("UI").update_resource_panel()
 	for s in get_tree().get_nodes_in_group("ships"):
 		s.selected = false
 	for p in get_tree().get_nodes_in_group("planets"):
 		p.update_ship_display()
-	get_node("Control").update_label()
+	get_node("UI").update_label()
